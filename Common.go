@@ -9,9 +9,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
-	"io/ioutil"
-	"log"
 	"net/http"
 	Url "net/url"
 	"sort"
@@ -44,35 +41,6 @@ func (r *Response) DecodeData(v interface{}) error {
 		return err
 	}
 	return nil
-}
-
-func RequestApi(url string, method string, data []byte) ([]byte, error) {
-	var body io.Reader
-
-	if data != nil {
-		body = bytes.NewReader(data)
-	}
-	client := http.Client{}
-	request, err := http.NewRequest(method, url, body)
-	if err != nil {
-		log.Println("make new request error : ", err)
-		return nil, err
-	}
-	request.Header.Set("Content-Type", "application/json;charset=utf-8")
-
-	response, err := client.Do(request)
-	if err != nil {
-		log.Println("do request error: ", err)
-		return nil, err
-	}
-	defer response.Body.Close()
-
-	var res []byte
-	res, err = ioutil.ReadAll(response.Body)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
 }
 
 func Sign(secretKey, method, url string, params Params, body string) (signStr string, err error) {

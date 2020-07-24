@@ -51,7 +51,6 @@ func (w *WeChat)GetDepartment(orgId string, data RequestData) (*Department, erro
 	return d, err
 }
 
-
 func (w *WeChat)departmentOpt(orgId, method, action,api string, data RequestData) (list *DepartmentList, err error) {
 	response, err := w.AuthAndRequest(orgId, method, action, api, data)
 	if err != nil {
