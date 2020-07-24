@@ -28,13 +28,14 @@ func (w *WeChat) Auth(OrgId string, data RequestData, method, apiRouter, action 
 		return "", err
 	}
 	params["Sign"] = sign
-	if method == "GET" {
+	if method == "GET" && data != nil {
 		for k, v := range data {
 			val, _ := json.Marshal(v)
 			params[k] = string(val)
 		}
 	}
-	httpUrl := SpliceUrl(method, url, params)
+
+	httpUrl := SpliceUrl(params)
 	httpUrl = fmt.Sprintf("https://%s?%s", url, httpUrl)
 	return httpUrl, nil
 }

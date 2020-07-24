@@ -39,14 +39,14 @@ func (w *WeChat) GetAccessToken(userCode string) (*Response, error) {
 	return &res, nil
 }
 
-func (w *WeChat) FlashToken(c context.Context, userCode, currentToken, string, expire time.Duration, result chan string) {
+func (w *WeChat) FlashToken(c context.Context, currentToken string, expire time.Duration, result chan string) {
 	go func() {
 		timer := time.NewTimer((expire - 1) * time.Second)
 		for {
 			select {
 			case <-timer.C:
 				url := fmt.Sprintf("%sRefreshAccessToken&SecretId=%d&SecretKey=%s&CurrentAccessToken=%s",w.ApiUrl, w.SecretId, w.SecretKey, currentToken)
-				// flash token
+				// flash token Api request
 				res, err := RequestApi(url, "GET", nil)
 				if err != nil {
 					log.Println("get AccessToken Api  failed, error info: ", err.Error())

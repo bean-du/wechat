@@ -67,22 +67,9 @@ func RequestApi(url string, method string, data *[]byte) ([]byte, error) {
 }
 
 func Sign(secret_key, method, url string, params Params, body string) (signStr string, err error) {
-	keys := make([]string, 0)
-	for k, _ := range params {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-
-	paramsPairs := make([]string, 0)
-
-	for _, k := range keys {
-		paramsPairs = append(paramsPairs, fmt.Sprintf("%s=%s", k, params[k]))
-	}
-
-	paramsStr := strings.Join(paramsPairs, "&")
+	paramsStr :=SpliceUrl(params)
 
 	rawStr := fmt.Sprintf("%s%s?%s", method, url, paramsStr)
-
 	if (method == "POST" || method == "PUT") && len(body) > 0 {
 		rawStr += fmt.Sprintf("&Data=%s", body)
 	}
@@ -93,8 +80,8 @@ func Sign(secret_key, method, url string, params Params, body string) (signStr s
 	signStr = Url.QueryEscape(b16encoded)
 	return
 }
-
-func SpliceUrl(method, url string, params Params) string {
+// Splice request params
+func SpliceUrl(params Params) string {
 	keys := make([]string, 0)
 	for k, _ := range params {
 		keys = append(keys, k)
@@ -102,12 +89,38 @@ func SpliceUrl(method, url string, params Params) string {
 	sort.Strings(keys)
 
 	paramsPairs := make([]string, 0)
-
 	for _, k := range keys {
 		paramsPairs = append(paramsPairs, fmt.Sprintf("%s=%s", k, params[k]))
 	}
-
 	paramsStr := strings.Join(paramsPairs, "&")
 
 	return paramsStr
+}
+
+func Request(url, method string, data RequestData, ) (response *Response, err error)  {
+	var  body []byte
+	if data != nil {
+		body, err = json.Marshal(data)
+		if err != nil {
+			return nil, err
+		}
+	}
+	res, err := RequestApi(url, method, &body)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := Decode(res, response); err != nil {
+		return nil, err
+	}
+	return
+}
+
+func Decode(data []byte, v interface{})  error {
+	reader := bytes.NewReader(data)
+	decoder := json.NewDecoder(reader)
+	if err := decoder.Decode(v); err != nil {
+		return err
+	}
+	return nil
 }
