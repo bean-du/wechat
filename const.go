@@ -7,5 +7,5 @@ const (
 )
 
 const (
- 	ORG_USER_API = "/v2/user"
+	ORG_USER_API = "/v2/user"
 )

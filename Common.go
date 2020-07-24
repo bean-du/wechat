@@ -17,8 +17,6 @@ import (
 	"strings"
 )
 
-
-
 type Response struct {
 	ErrorCode string          `json:"ErrorCode"`
 	RequestId string          `json:"RequestId"`
@@ -64,7 +62,7 @@ func RequestApi(url string, method string, data *[]byte) ([]byte, error) {
 }
 
 func Sign(secret_key, method, url string, params Params, body string) (signStr string, err error) {
-	paramsStr :=SpliceUrl(params)
+	paramsStr := SpliceUrl(params)
 
 	rawStr := fmt.Sprintf("%s%s?%s", method, url, paramsStr)
 	if (method == "POST" || method == "PUT") && len(body) > 0 {
@@ -77,6 +75,7 @@ func Sign(secret_key, method, url string, params Params, body string) (signStr s
 	signStr = Url.QueryEscape(b16encoded)
 	return
 }
+
 // Splice request params
 func SpliceUrl(params Params) string {
 	keys := make([]string, 0)
@@ -94,8 +93,8 @@ func SpliceUrl(params Params) string {
 	return paramsStr
 }
 
-func request(url, method string, data RequestData, ) (response *Response, err error)  {
-	var  body []byte
+func request(url, method string, data RequestData, ) (response *Response, err error) {
+	var body []byte
 	if data != nil {
 		body, err = json.Marshal(data)
 		if err != nil {
@@ -117,7 +116,7 @@ func request(url, method string, data RequestData, ) (response *Response, err er
 	return
 }
 
-func decode(data []byte, v interface{})  error {
+func decode(data []byte, v interface{}) error {
 	reader := bytes.NewReader(data)
 	decoder := json.NewDecoder(reader)
 	if err := decoder.Decode(v); err != nil {

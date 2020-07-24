@@ -52,7 +52,6 @@ type OrgRelation struct {
 	Logo  string `json:"Logo"`
 }
 
-
 func (w *WeChat) GetOrgInfo(orgId string, data RequestData) (*OrgInfo, error) {
 	response, err := w.authAndRequest(orgId, "GET", "GetOrgInfo", ORG_USER_API, nil)
 	if err != nil {

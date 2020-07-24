@@ -34,14 +34,14 @@ type DeleteTeachersRes struct {
 }
 
 type UserDeleteRes struct {
-	Fails      []FailedIdx `json:"Fails"`
+	Fails []FailedIdx `json:"Fails"`
 }
 
 type OpenStudent struct {
-	Name string `json:"Name"`
-	UserNo string `json:"UserNo	"`
-	JoinDate string `json:"JoinDate"`
-	Sex int `json:"Sex"` //性别 1:男 2:女
+	Name        string               `json:"Name"`
+	UserNo      string               `json:"UserNo	"`
+	JoinDate    string               `json:"JoinDate"`
+	Sex         int                  `json:"Sex"` //性别 1:男 2:女
 	Departments []*StudentDepartment `json:"Departments"`
 }
 type StudentDepartment struct {
@@ -50,10 +50,10 @@ type StudentDepartment struct {
 
 type OpenParent struct {
 	StudentId string `json:"StudentId"`
-	Relation string `json:"Relation"`
-	Name string `json:"Name"`
-	Phone string `json:"Phone"`
-	Work string `json:"Work"`
+	Relation  string `json:"Relation"`
+	Name      string `json:"Name"`
+	Phone     string `json:"Phone"`
+	Work      string `json:"Work"`
 }
 
 //添加教师, data数据示例： data["Teachers"] = []*Teachers
@@ -77,23 +77,23 @@ func (w *WeChat) UpdateTemporarys(orgId string, data RequestData) (*UserAddUpdat
 }
 
 //添加学生信息，支持批量添加 data["OpenStudent"] = []*OpenStudent
-func (w *WeChat)AddStudents(orgId string, data RequestData) (*UserAddUpdateResponse, error) {
-	return w.addAndUpdate(orgId,data,"AddStudents")
+func (w *WeChat) AddStudents(orgId string, data RequestData) (*UserAddUpdateResponse, error) {
+	return w.addAndUpdate(orgId, data, "AddStudents")
 }
 
 //修改学生信息，支持批量修改 data["OpenStudent"] = []*OpenStudent
-func (w *WeChat)UpdateStudents(orgId string, data RequestData) (*UserAddUpdateResponse, error) {
-	return w.addAndUpdate(orgId,data,"UpdateStudents")
+func (w *WeChat) UpdateStudents(orgId string, data RequestData) (*UserAddUpdateResponse, error) {
+	return w.addAndUpdate(orgId, data, "UpdateStudents")
 }
 
 // 添加家长信息，支持批量添加 data["OpenParent"] = []*OpenParent
-func (w *WeChat)AddParents(orgId string, data RequestData) (*UserAddUpdateResponse, error)  {
-	return w.addAndUpdate(orgId,data, "AddParents")
+func (w *WeChat) AddParents(orgId string, data RequestData) (*UserAddUpdateResponse, error) {
+	return w.addAndUpdate(orgId, data, "AddParents")
 }
 
 // 修改家长信息，支持批量修改 data["OpenParent"] = []*OpenParent
-func (w *WeChat)UpdateParents(orgId string, data RequestData) (*UserAddUpdateResponse, error)  {
-	return w.addAndUpdate(orgId,data, "UpdateParents")
+func (w *WeChat) UpdateParents(orgId string, data RequestData) (*UserAddUpdateResponse, error) {
+	return w.addAndUpdate(orgId, data, "UpdateParents")
 }
 
 //删除教师 data["Teachers"] = []*Teachers
@@ -111,7 +111,7 @@ func (w *WeChat) DeleteTeachers(orgId string, data RequestData) (*DeleteTeachers
 }
 
 //批量删除学生 data["OpenStudent"] = []*OrgUserId{"1", "2"}
-func (w *WeChat) DeleteStudents(orgId string, data RequestData) (*UserDeleteRes, error)  {
+func (w *WeChat) DeleteStudents(orgId string, data RequestData) (*UserDeleteRes, error) {
 	response, err := w.authAndRequest(orgId, "POST", "DeleteStudents", ORG_USER_API, data)
 	if err != nil {
 		return nil, err
@@ -125,7 +125,7 @@ func (w *WeChat) DeleteStudents(orgId string, data RequestData) (*UserDeleteRes,
 }
 
 //批量删除家长 data["OpenParent"] = []*OrgUserId{"1", "2"}
-func (w *WeChat) DeleteParents(orgId string, data RequestData) (*UserDeleteRes, error)  {
+func (w *WeChat) DeleteParents(orgId string, data RequestData) (*UserDeleteRes, error) {
 	response, err := w.authAndRequest(orgId, "POST", "DeleteParents", ORG_USER_API, data)
 	if err != nil {
 		return nil, err

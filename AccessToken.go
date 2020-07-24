@@ -45,7 +45,7 @@ func (w *WeChat) FlashToken(c context.Context, currentToken string, expire time.
 		for {
 			select {
 			case <-timer.C:
-				url := fmt.Sprintf("%sRefreshAccessToken&SecretId=%d&SecretKey=%s&CurrentAccessToken=%s",w.ApiUrl, w.SecretId, w.SecretKey, currentToken)
+				url := fmt.Sprintf("%sRefreshAccessToken&SecretId=%d&SecretKey=%s&CurrentAccessToken=%s", w.ApiUrl, w.SecretId, w.SecretKey, currentToken)
 				// flash token Api request
 				res, err := RequestApi(url, "GET", nil)
 				if err != nil {

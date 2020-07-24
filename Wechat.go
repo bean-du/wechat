@@ -14,8 +14,9 @@ func NewWeChat(secretId int, secretKey, apiUrl string) *WeChat {
 		ApiUrl:    apiUrl,
 	}
 }
+
 // 执行签名并发起请求
-func (w *WeChat)authAndRequest(orgId, method, action, api string, data RequestData,) (response *Response, err error) {
+func (w *WeChat) authAndRequest(orgId, method, action, api string, data RequestData, ) (response *Response, err error) {
 	url, err := w.Auth(orgId, data, method, api, action)
 	if err != nil {
 		return nil, err
