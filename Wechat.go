@@ -1,6 +1,12 @@
 package wechat
 
-// api url don't need "https" and route, like this "oapi.campus.qq.com"
+type WeChat struct {
+	SecretId  int
+	SecretKey string
+	ApiUrl    string
+}
+
+// ApiUrl不需要 "https" 和请求的 api 名称, example： "oapi.campus.qq.com"
 func NewWeChat(secretId int, secretKey, apiUrl string) *WeChat {
 	return &WeChat{
 		SecretId:  secretId,

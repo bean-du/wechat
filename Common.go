@@ -17,11 +17,7 @@ import (
 	"strings"
 )
 
-type WeChat struct {
-	SecretId  int
-	SecretKey string
-	ApiUrl    string
-}
+
 
 type Response struct {
 	ErrorCode string          `json:"ErrorCode"`
