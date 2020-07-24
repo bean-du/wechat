@@ -61,12 +61,7 @@ type OrgRelation struct {
 var orgApi = "/v2/user"
 
 func (w *WeChat) GetOrgInfo(orgId string, data RequestData) (*OrgInfo, error) {
-	url, err := w.Auth(orgId, data, "GET", orgApi, "GetOrgInfo")
-	if err != nil {
-		return nil, err
-	}
-
-	response, err := Request(url, "GET", nil)
+	response, err := w.authAndRequest(orgId, "GET", "GetOrgInfo", orgApi, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -79,12 +74,7 @@ func (w *WeChat) GetOrgInfo(orgId string, data RequestData) (*OrgInfo, error) {
 }
 
 func (w *WeChat) GetOrgAdmins(orgId string) (*OrgAdmins, error) {
-	url, err := w.Auth(orgId, nil, "GET", orgApi, "GetOrgAdmins")
-	if err != nil {
-		return nil, err
-	}
-
-	response, err := Request(url, "GET", nil)
+	response, err := w.authAndRequest(orgId, "GET", "GetOrgAdmins", orgApi, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -97,12 +87,7 @@ func (w *WeChat) GetOrgAdmins(orgId string) (*OrgAdmins, error) {
 }
 
 func (w *WeChat) GetOrgTitles(orgId string) (*OrgTitles, error) {
-	url, err := w.Auth(orgId, nil, "GET", orgApi, "GetOrgTitles")
-	if err != nil {
-		return nil, err
-	}
-
-	response, err := Request(url, "GET", nil)
+	response, err := w.authAndRequest(orgId, "GET", "GetOrgTitles", orgApi, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -117,12 +102,7 @@ func (w *WeChat) GetOrgTitles(orgId string) (*OrgTitles, error) {
 // orgType 为请求关系的类型 2：上级单位 4：学校
 func (w *WeChat) GetOfficeRelationsList(orgType int, orgId string) (*OrgRelationsList, error) {
 	data := RequestData{"Type": orgType}
-	url, err := w.Auth(orgId, data, "GET", orgApi, "GetOrgTitles")
-	if err != nil {
-		return nil, err
-	}
-
-	response, err := Request(url, "GET", nil)
+	response, err := w.authAndRequest(orgId, "GET", "GetOrgTitles", orgApi, data)
 	if err != nil {
 		return nil, err
 	}

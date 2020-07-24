@@ -6,6 +6,7 @@ import (
 	"crypto/sha1"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -97,7 +98,7 @@ func SpliceUrl(params Params) string {
 	return paramsStr
 }
 
-func Request(url, method string, data RequestData, ) (response *Response, err error)  {
+func request(url, method string, data RequestData, ) (response *Response, err error)  {
 	var  body []byte
 	if data != nil {
 		body, err = json.Marshal(data)
@@ -110,17 +111,28 @@ func Request(url, method string, data RequestData, ) (response *Response, err er
 		return nil, err
 	}
 
-	if err := Decode(res, response); err != nil {
+	response = new(Response)
+	if err := decode(res, response); err != nil {
 		return nil, err
+	}
+	if !checkErrCode(response) {
+		return nil, errors.New(response.ErrorMsg)
 	}
 	return
 }
 
-func Decode(data []byte, v interface{})  error {
+func decode(data []byte, v interface{})  error {
 	reader := bytes.NewReader(data)
 	decoder := json.NewDecoder(reader)
 	if err := decoder.Decode(v); err != nil {
 		return err
 	}
 	return nil
+}
+
+func checkErrCode(res *Response) bool {
+	if res.ErrorCode == "OK" {
+		return true
+	}
+	return false
 }
