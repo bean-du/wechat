@@ -1,7 +1,5 @@
 package wechat
 
-var userApi = "/v2/user"
-
 type UsersInfos struct {
 	Total int `json:"Total"`
 	DataList []*UserInfo `json:"DataList"`
@@ -32,7 +30,7 @@ type UserGroups struct {
 
 
 func (w *WeChat)GetUsersInfo(orgId string, data RequestData) (*UsersInfos, error) {
-	response, err := w.authAndRequest(orgId, "POST", "GetUsersInfo", userApi, data)
+	response, err := w.authAndRequest(orgId, "POST", "GetUsersInfo", ORG_USER_API, data)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +43,7 @@ func (w *WeChat)GetUsersInfo(orgId string, data RequestData) (*UsersInfos, error
 }
 
 func (w *WeChat)GetUsersInfoDetail(orgId string, data RequestData) (*UsersInfoDetails, error) {
-	response, err := w.authAndRequest(orgId, "POST", "GetUsersInfoDetail", userApi, data)
+	response, err := w.authAndRequest(orgId, "POST", "GetUsersInfoDetail", ORG_USER_API, data)
 	if err != nil {
 		return nil, err
 	}
@@ -58,7 +56,7 @@ func (w *WeChat)GetUsersInfoDetail(orgId string, data RequestData) (*UsersInfoDe
 }
 // 根据架构id获取用户信息列表
 func (w *WeChat)GetUserListByDepartmentIds(orgId string, data RequestData) (*UserList, error) {
-	response, err := w.authAndRequest(orgId, "POST", "GetUserListByDepartmentIds", userApi, data)
+	response, err := w.authAndRequest(orgId, "POST", "GetUserListByDepartmentIds", ORG_USER_API, data)
 	if err != nil {
 		return nil, err
 	}
@@ -75,7 +73,7 @@ func (w *WeChat)GetUsersInfoUserNo(orgId string, data RequestData)  {
 }
 // 获取教师的其他身份
 func (w *WeChat)UserGroups(orgId string, data RequestData) (*UserGroups, error) {
-	response, err := w.authAndRequest(orgId, "POST", "UserGroups", userApi, data)
+	response, err := w.authAndRequest(orgId, "POST", "UserGroups", ORG_USER_API, data)
 	if err != nil {
 		return nil, err
 	}

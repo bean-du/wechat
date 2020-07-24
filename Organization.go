@@ -2,12 +2,6 @@ package wechat
 
 type OrgType string
 
-const (
-	OFFICE OrgType = "上级单位"
-	GROUP  OrgType = "总集"
-	SCHOOL OrgType = "学校"
-)
-
 type OrgInfo struct {
 	Name         string  `json:"Name"`
 	Logo         string  `json:"Logo"`
@@ -58,10 +52,9 @@ type OrgRelation struct {
 	Logo  string `json:"Logo"`
 }
 
-var orgApi = "/v2/user"
 
 func (w *WeChat) GetOrgInfo(orgId string, data RequestData) (*OrgInfo, error) {
-	response, err := w.authAndRequest(orgId, "GET", "GetOrgInfo", orgApi, nil)
+	response, err := w.authAndRequest(orgId, "GET", "GetOrgInfo", ORG_USER_API, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -74,7 +67,7 @@ func (w *WeChat) GetOrgInfo(orgId string, data RequestData) (*OrgInfo, error) {
 }
 
 func (w *WeChat) GetOrgAdmins(orgId string) (*OrgAdmins, error) {
-	response, err := w.authAndRequest(orgId, "GET", "GetOrgAdmins", orgApi, nil)
+	response, err := w.authAndRequest(orgId, "GET", "GetOrgAdmins", ORG_USER_API, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -87,7 +80,7 @@ func (w *WeChat) GetOrgAdmins(orgId string) (*OrgAdmins, error) {
 }
 
 func (w *WeChat) GetOrgTitles(orgId string) (*OrgTitles, error) {
-	response, err := w.authAndRequest(orgId, "GET", "GetOrgTitles", orgApi, nil)
+	response, err := w.authAndRequest(orgId, "GET", "GetOrgTitles", ORG_USER_API, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +95,7 @@ func (w *WeChat) GetOrgTitles(orgId string) (*OrgTitles, error) {
 // orgType 为请求关系的类型 2：上级单位 4：学校
 func (w *WeChat) GetOfficeRelationsList(orgType int, orgId string) (*OrgRelationsList, error) {
 	data := RequestData{"Type": orgType}
-	response, err := w.authAndRequest(orgId, "GET", "GetOrgTitles", orgApi, data)
+	response, err := w.authAndRequest(orgId, "GET", "GetOrgTitles", ORG_USER_API, data)
 	if err != nil {
 		return nil, err
 	}
