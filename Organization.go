@@ -1,5 +1,6 @@
 package wechat
 
+import "net/http"
 
 type OrgInfo struct {
 	Name         string  `json:"Name"`
@@ -52,7 +53,7 @@ type OrgRelation struct {
 }
 
 func (w *WeChat) GetOrgInfo(orgId string, data RequestData) (*OrgInfo, error) {
-	response, err := w.authAndRequest(orgId, "GET", "GetOrgInfo", ORG_USER_API, nil)
+	response, err := w.AuthAndRequest(orgId, http.MethodGet, "GetOrgInfo", ORG_USER_API, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +66,7 @@ func (w *WeChat) GetOrgInfo(orgId string, data RequestData) (*OrgInfo, error) {
 }
 
 func (w *WeChat) GetOrgAdmins(orgId string) (*OrgAdmins, error) {
-	response, err := w.authAndRequest(orgId, "GET", "GetOrgAdmins", ORG_USER_API, nil)
+	response, err := w.AuthAndRequest(orgId, http.MethodGet, "GetOrgAdmins", ORG_USER_API, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +79,7 @@ func (w *WeChat) GetOrgAdmins(orgId string) (*OrgAdmins, error) {
 }
 
 func (w *WeChat) GetOrgTitles(orgId string) (*OrgTitles, error) {
-	response, err := w.authAndRequest(orgId, "GET", "GetOrgTitles", ORG_USER_API, nil)
+	response, err := w.AuthAndRequest(orgId, http.MethodGet, "GetOrgTitles", ORG_USER_API, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -93,7 +94,7 @@ func (w *WeChat) GetOrgTitles(orgId string) (*OrgTitles, error) {
 // orgType 为请求关系的类型 2：上级单位 4：学校
 func (w *WeChat) GetOfficeRelationsList(orgType int, orgId string) (*OrgRelationsList, error) {
 	data := RequestData{"Type": orgType}
-	response, err := w.authAndRequest(orgId, "GET", "GetOrgTitles", ORG_USER_API, data)
+	response, err := w.AuthAndRequest(orgId, http.MethodGet, "GetOrgTitles", ORG_USER_API, data)
 	if err != nil {
 		return nil, err
 	}

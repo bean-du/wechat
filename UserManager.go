@@ -1,5 +1,7 @@
 package wechat
 
+import "net/http"
+
 type UserAddUpdateResponse struct {
 	Success []*SuccessIdx `json:"Success"`
 	Fails   []*FailedIdx  `json:"fails"`
@@ -98,7 +100,7 @@ func (w *WeChat) UpdateParents(orgId string, data RequestData) (*UserAddUpdateRe
 
 //删除教师 data["Teachers"] = []*Teachers
 func (w *WeChat) DeleteTeachers(orgId string, data RequestData) (*DeleteTeachersRes, error) {
-	response, err := w.authAndRequest(orgId, "POST", "DeleteTeachers", ORG_USER_API, data)
+	response, err := w.AuthAndRequest(orgId, http.MethodPost, "DeleteTeachers", ORG_USER_API, data)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +114,7 @@ func (w *WeChat) DeleteTeachers(orgId string, data RequestData) (*DeleteTeachers
 
 //批量删除学生 data["OpenStudent"] = []*OrgUserId{"1", "2"}
 func (w *WeChat) DeleteStudents(orgId string, data RequestData) (*UserDeleteRes, error) {
-	response, err := w.authAndRequest(orgId, "POST", "DeleteStudents", ORG_USER_API, data)
+	response, err := w.AuthAndRequest(orgId, http.MethodPost, "DeleteStudents", ORG_USER_API, data)
 	if err != nil {
 		return nil, err
 	}
@@ -126,7 +128,7 @@ func (w *WeChat) DeleteStudents(orgId string, data RequestData) (*UserDeleteRes,
 
 //批量删除家长 data["OpenParent"] = []*OrgUserId{"1", "2"}
 func (w *WeChat) DeleteParents(orgId string, data RequestData) (*UserDeleteRes, error) {
-	response, err := w.authAndRequest(orgId, "POST", "DeleteParents", ORG_USER_API, data)
+	response, err := w.AuthAndRequest(orgId, http.MethodPost, "DeleteParents", ORG_USER_API, data)
 	if err != nil {
 		return nil, err
 	}
@@ -139,7 +141,7 @@ func (w *WeChat) DeleteParents(orgId string, data RequestData) (*UserDeleteRes, 
 }
 
 func (w *WeChat) addAndUpdate(orgId string, data RequestData, action string) (*UserAddUpdateResponse, error) {
-	response, err := w.authAndRequest(orgId, "POST", action, ORG_USER_API, data)
+	response, err := w.AuthAndRequest(orgId, http.MethodPost, action, ORG_USER_API, data)
 	if err != nil {
 		return nil, err
 	}
