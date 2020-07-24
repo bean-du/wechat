@@ -21,10 +21,12 @@ type UserInfo struct {
 	CreateTime string `json:"CreateTime"`
 	UserNo string `json:"UserNo"`
 }
+
 type UsersInfoDetails struct {
 	Total    int               `json:"Total"`
 	DataList []*UserInfo `json:"DataList"`
 }
+
 type UserGroups struct {
 	GroupIds []int `json:"GroupIds"`
 }
