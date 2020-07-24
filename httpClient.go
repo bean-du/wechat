@@ -34,16 +34,6 @@ const (
 	defaultRetryCount = 0
 )
 
-type Config struct {
-	Dial            time.Duration
-	Timeout         time.Duration
-	KeepAlive       time.Duration
-	MaxConn        int
-	MaxIdle         int
-	BackoffInterval time.Duration
-	retryCount      int
-}
-
 type HttpClient struct {
 	conf      *Config
 	client    *http.Client

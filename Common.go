@@ -16,7 +16,18 @@ import (
 	Url "net/url"
 	"sort"
 	"strings"
+	"time"
 )
+
+type Config struct {
+	Dial            time.Duration
+	Timeout         time.Duration
+	KeepAlive       time.Duration
+	MaxConn        int
+	MaxIdle         int
+	BackoffInterval time.Duration
+	retryCount      int
+}
 
 type Response struct {
 	ErrorCode ErrCode         `json:"ErrorCode"`
@@ -71,11 +82,11 @@ func Sign(secretKey, method, url string, params Params, body string) (signStr st
 	if (method == http.MethodPost || method == http.MethodPut) && len(body) > 0 {
 		rawStr += fmt.Sprintf("&Data=%s", body)
 	}
+
 	mac := hmac.New(sha1.New, []byte(secretKey))
 	mac.Write([]byte(rawStr))
-	hash := mac.Sum(nil)
-	b16encoded := hex.EncodeToString(hash)
-	signStr = Url.QueryEscape(b16encoded)
+
+	signStr = Url.QueryEscape(hex.EncodeToString(mac.Sum(nil)))
 	return
 }
 

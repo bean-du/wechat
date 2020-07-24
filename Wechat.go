@@ -8,11 +8,13 @@ type WeChat struct {
 }
 
 // ApiUrl不需要 "https" 和请求的 api 名称, example： "oapi.campus.qq.com"
-func NewWeChat(secretId int, secretKey, apiUrl string) *WeChat {
+// config 为网络请求已经重试配置
+func NewWeChat(secretId int, secretKey, apiUrl string, conf *Config) *WeChat {
 	return &WeChat{
 		SecretId:  secretId,
 		SecretKey: secretKey,
 		ApiUrl:    apiUrl,
+		Conf: conf,
 	}
 }
 
