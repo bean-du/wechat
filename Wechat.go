@@ -4,6 +4,7 @@ type WeChat struct {
 	SecretId  int
 	SecretKey string
 	ApiUrl    string
+	Conf *Config
 }
 
 // ApiUrl不需要 "https" 和请求的 api 名称, example： "oapi.campus.qq.com"
@@ -21,5 +22,5 @@ func (w *WeChat) authAndRequest(orgId, method, action, api string, data RequestD
 	if err != nil {
 		return nil, err
 	}
-	return request(url, "GET", data)
+	return w.request(url, method, data)
 }

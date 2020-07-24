@@ -2,6 +2,7 @@ package wechat
 
 import (
 	"bytes"
+	"context"
 	"crypto/hmac"
 	"crypto/sha1"
 	"encoding/hex"
@@ -18,9 +19,10 @@ import (
 )
 
 type Response struct {
-	ErrorCode string          `json:"ErrorCode"`
+	ErrorCode ErrCode         `json:"ErrorCode"`
 	RequestId string          `json:"RequestId"`
 	ErrorMsg  string          `json:"ErrorMsg"`
+	Detail    string          `json:"Detail"`
 	Data      json.RawMessage `json:"Data"`
 }
 
@@ -33,11 +35,11 @@ func (r *Response) DecodeData(v interface{}) error {
 	return nil
 }
 
-func RequestApi(url string, method string, data *[]byte) ([]byte, error) {
+func RequestApi(url string, method string, data []byte) ([]byte, error) {
 	var body io.Reader
 
 	if data != nil {
-		body = bytes.NewReader(*data)
+		body = bytes.NewReader(data)
 	}
 	client := http.Client{}
 	request, err := http.NewRequest(method, url, body)
@@ -46,6 +48,7 @@ func RequestApi(url string, method string, data *[]byte) ([]byte, error) {
 		return nil, err
 	}
 	request.Header.Set("Content-Type", "application/json;charset=utf-8")
+
 	response, err := client.Do(request)
 	if err != nil {
 		log.Println("do request error: ", err)
@@ -61,14 +64,14 @@ func RequestApi(url string, method string, data *[]byte) ([]byte, error) {
 	return res, nil
 }
 
-func Sign(secret_key, method, url string, params Params, body string) (signStr string, err error) {
+func Sign(secretKey, method, url string, params Params, body string) (signStr string, err error) {
 	paramsStr := SpliceUrl(params)
 
 	rawStr := fmt.Sprintf("%s%s?%s", method, url, paramsStr)
-	if (method == "POST" || method == "PUT") && len(body) > 0 {
+	if (method == http.MethodPost || method == http.MethodPut) && len(body) > 0 {
 		rawStr += fmt.Sprintf("&Data=%s", body)
 	}
-	mac := hmac.New(sha1.New, []byte(secret_key))
+	mac := hmac.New(sha1.New, []byte(secretKey))
 	mac.Write([]byte(rawStr))
 	hash := mac.Sum(nil)
 	b16encoded := hex.EncodeToString(hash)
@@ -93,40 +96,31 @@ func SpliceUrl(params Params) string {
 	return paramsStr
 }
 
-func request(url, method string, data RequestData, ) (response *Response, err error) {
-	var body []byte
-	if data != nil {
-		body, err = json.Marshal(data)
-		if err != nil {
-			return nil, err
-		}
+func (w *WeChat)request(url, method string, data RequestData) (response *Response, err error) {
+	response = new(Response)
+	client := NewHttpClient(w.Conf)
+
+	ctx, cancel := context.WithTimeout(context.Background(), w.Conf.Timeout)
+	defer cancel()
+
+	switch method {
+	case http.MethodPost:
+		err = client.Post(ctx, url, MIMEJSON, nil, data, response)
+	case http.MethodGet:
+		err = client.Get(ctx, url, nil, response)
 	}
-	res, err := RequestApi(url, method, &body)
-	if err != nil {
+	if  err != nil {
 		return nil, err
 	}
 
-	response = new(Response)
-	if err := decode(res, response); err != nil {
-		return nil, err
-	}
 	if !checkErrCode(response) {
-		return nil, errors.New(response.ErrorMsg)
+		return nil, errors.New(response.ErrorMsg + response.Detail)
 	}
 	return
 }
 
-func decode(data []byte, v interface{}) error {
-	reader := bytes.NewReader(data)
-	decoder := json.NewDecoder(reader)
-	if err := decoder.Decode(v); err != nil {
-		return err
-	}
-	return nil
-}
-
 func checkErrCode(res *Response) bool {
-	if res.ErrorCode == "OK" {
+	if res.ErrorCode == ERROR_CODE_OK {
 		return true
 	}
 	return false

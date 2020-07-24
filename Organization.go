@@ -1,6 +1,5 @@
 package wechat
 
-type OrgType string
 
 type OrgInfo struct {
 	Name         string  `json:"Name"`

@@ -1,11 +1,11 @@
 package wechat
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 	"time"
 )
 
@@ -26,17 +26,11 @@ type Session struct {
 
 func (w *WeChat) GetAccessToken(userCode string) (*Response, error) {
 	apiUrl := fmt.Sprintf("%s?Action=GetAccessTokenByCode&SecretId=%d&SecretKey=%s&UserCode=%s", w.ApiUrl, w.SecretId, w.SecretKey, userCode)
-	response, err := RequestApi(apiUrl, "GET", nil)
+	response, err := w.request(apiUrl, http.MethodGet, nil)
 	if err != nil {
 		return nil, err
 	}
-	reader := bytes.NewReader(response)
-	decoder := json.NewDecoder(reader)
-	var res Response
-	if err := decoder.Decode(&res); err != nil {
-		return nil, err
-	}
-	return &res, nil
+	return response, nil
 }
 
 func (w *WeChat) FlashToken(c context.Context, currentToken string, expire time.Duration, result chan string) {
@@ -47,15 +41,8 @@ func (w *WeChat) FlashToken(c context.Context, currentToken string, expire time.
 			case <-timer.C:
 				url := fmt.Sprintf("%sRefreshAccessToken&SecretId=%d&SecretKey=%s&CurrentAccessToken=%s", w.ApiUrl, w.SecretId, w.SecretKey, currentToken)
 				// flash token Api request
-				res, err := RequestApi(url, "GET", nil)
+				response, err :=w.request(url, http.MethodGet, nil)
 				if err != nil {
-					log.Println("get AccessToken Api  failed, error info: ", err.Error())
-					goto EXIT
-				}
-				reader := bytes.NewReader(res)
-				decoder := json.NewDecoder(reader)
-				var response *Response
-				if err := decoder.Decode(response); err != nil {
 					log.Println("get AccessToken Api  failed, error info: ", err.Error())
 					goto EXIT
 				}
@@ -68,7 +55,7 @@ func (w *WeChat) FlashToken(c context.Context, currentToken string, expire time.
 			case <-c.Done():
 				goto EXIT
 			default:
-				time.Sleep((expire - 1) * time.Second)
+				time.Sleep((expire) * time.Second)
 			}
 		}
 	EXIT:
