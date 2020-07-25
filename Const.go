@@ -12,6 +12,7 @@ const (
 const (
 	ORG_USER_API = "/v2/user"
 	MSG_API      = "/v2/message"
+	EDU_API      = "/campus/education"
 )
 
 const (

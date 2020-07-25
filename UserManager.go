@@ -16,6 +16,7 @@ type FailedIdx struct {
 }
 
 type Teacher struct {
+	Id int `json:"Id"`
 	Name     string `json:"Name"`
 	Phone    string `json:"Phone"`
 	Gender   int    `json:"Gender"`   //1：男 2：女
