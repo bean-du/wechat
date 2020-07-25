@@ -1,6 +1,5 @@
 package wechat
 
-
 type ErrCode string
 type OrgType string
 
@@ -12,10 +11,10 @@ const (
 
 const (
 	ORG_USER_API = "/v2/user"
-	MSG_API = "/v2/message"
+	MSG_API      = "/v2/message"
 )
 
 const (
-	ERROR_CODE_OK ErrCode = "OK"
-	ERROR_CODE_FAILED  ErrCode= "Failed"
+	ERROR_CODE_OK     ErrCode = "OK"
+	ERROR_CODE_FAILED ErrCode = "Failed"
 )

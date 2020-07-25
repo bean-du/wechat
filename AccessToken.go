@@ -41,7 +41,7 @@ func (w *WeChat) FlashToken(c context.Context, currentToken string, expire time.
 			case <-timer.C:
 				url := fmt.Sprintf("%sRefreshAccessToken&SecretId=%d&SecretKey=%s&CurrentAccessToken=%s", w.ApiUrl, w.SecretId, w.SecretKey, currentToken)
 				// flash token Api request
-				response, err :=w.request(url, http.MethodGet, nil)
+				response, err := w.request(url, http.MethodGet, nil)
 				if err != nil {
 					log.Println("get AccessToken Api  failed, error info: ", err.Error())
 					goto EXIT

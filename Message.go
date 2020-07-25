@@ -22,37 +22,38 @@ type User struct {
 }
 
 type MessageList struct {
-	PageInfo PageInfo `json:"PageInfo"`
+	PageInfo PageInfo           `json:"PageInfo"`
 	DataList []*MessageResponse `json:"DataList"`
 }
 type PageInfo struct {
 	Total int `json:"Total"`
-	Page int `json:"Page"`
-	Size int `json:"Size"`
+	Page  int `json:"Page"`
+	Size  int `json:"Size"`
 }
 type MessageResponse struct {
-	Id int `json:"Id"`
-	Title string `json:"Title"`
-	OrgUserId string `json:"OrgUserId"`
-	Name string `json:"Name"`
-	Read string `json:"Read"`
-	Status int `json:"Status"`
-	StatusStr string `json:"StatusStr"`
-	SendTime string `json:"SendTime"`
-	SendNum int `json:"SendNum"`
-	ReadNum int `json:"ReadNum"`
-	Timer string `json:"Timer"`
-	Tag int `json:"Tag"`
-	TagLabel string `json:"TagLabel"`
-	Range json.RawMessage `json:"Range"`
+	Id        int             `json:"Id"`
+	Title     string          `json:"Title"`
+	OrgUserId string          `json:"OrgUserId"`
+	Name      string          `json:"Name"`
+	Read      string          `json:"Read"`
+	Status    int             `json:"Status"`
+	StatusStr string          `json:"StatusStr"`
+	SendTime  string          `json:"SendTime"`
+	SendNum   int             `json:"SendNum"`
+	ReadNum   int             `json:"ReadNum"`
+	Timer     string          `json:"Timer"`
+	Tag       int             `json:"Tag"`
+	TagLabel  string          `json:"TagLabel"`
+	Range     json.RawMessage `json:"Range"`
 }
 
 //发送信息通知
-func (w *WeChat)SendMessage(orgId string, data RequestData) (*Response, error) {
+func (w *WeChat) SendMessage(orgId string, data RequestData) (*Response, error) {
 	return w.AuthAndRequest(orgId, http.MethodPost, "SendMessage", MSG_API, data)
 }
+
 //获取消息发送列表
-func (w *WeChat)GetMessageList(orgId string, data RequestData) (*MessageList, error) {
+func (w *WeChat) GetMessageList(orgId string, data RequestData) (*MessageList, error) {
 	response, err := w.AuthAndRequest(orgId, http.MethodGet, "GetMessageList", MSG_API, data)
 	if err != nil {
 		return nil, err
@@ -61,8 +62,9 @@ func (w *WeChat)GetMessageList(orgId string, data RequestData) (*MessageList, er
 	err = response.DecodeData(res)
 	return res, err
 }
+
 //获取消息详情
-func (w *WeChat)GetMessageDetail(orgId string, data RequestData) (*MessageResponse, error) {
+func (w *WeChat) GetMessageDetail(orgId string, data RequestData) (*MessageResponse, error) {
 	response, err := w.AuthAndRequest(orgId, http.MethodGet, "GetMessageDetail", MSG_API, data)
 	if err != nil {
 		return nil, err

@@ -35,25 +35,25 @@ const (
 )
 
 type HttpClient struct {
-	conf      *Config
-	client    *http.Client
-	dialer    *net.Dialer
-	transport *http.Transport
+	conf       *Config
+	client     *http.Client
+	dialer     *net.Dialer
+	transport  *http.Transport
 	retryCount int
-	retry Retriable
+	retry      Retriable
 }
 
-func NewHttpClient(c *Config) *HttpClient  {
+func NewHttpClient(c *Config) *HttpClient {
 	dialer := &net.Dialer{
-		Timeout: c.Dial,
+		Timeout:   c.Dial,
 		KeepAlive: c.KeepAlive,
 	}
 	transport := &http.Transport{
-		DialContext: dialer.DialContext,
-		MaxConnsPerHost: c.MaxConn,
+		DialContext:         dialer.DialContext,
+		MaxConnsPerHost:     c.MaxConn,
 		MaxIdleConnsPerHost: c.MaxIdle,
-		IdleConnTimeout: c.KeepAlive,
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		IdleConnTimeout:     c.KeepAlive,
+		TLSClientConfig:     &tls.Config{InsecureSkipVerify: true},
 	}
 	_ = http2.ConfigureTransport(transport)
 	bo := NewConstantBackoff(c.BackoffInterval)
@@ -63,7 +63,7 @@ func NewHttpClient(c *Config) *HttpClient  {
 			Transport: transport,
 		},
 		retryCount: defaultRetryCount,
-		retry: NewRetrier(bo),
+		retry:      NewRetrier(bo),
 	}
 }
 
@@ -71,12 +71,11 @@ func (c *HttpClient) SetRetryCount(count int) {
 	c.retryCount = count
 }
 
-
 // Get makes a HTTP GET request to provided URL with context passed in
 func (c *HttpClient) Get(ctx context.Context, url string, headers http.Header, res interface{}) (err error) {
 	request, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
-		return errors.New("GET - request creation failed"+ err.Error())
+		return errors.New("GET - request creation failed" + err.Error())
 	}
 
 	request.Header = headers
