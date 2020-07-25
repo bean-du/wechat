@@ -17,11 +17,16 @@ import (
 )
 
 type Config struct {
+	AppId           int
+	SecretKey       string
+	ApiAddr         string
+
 	Dial            time.Duration
 	Timeout         time.Duration
 	KeepAlive       time.Duration
-	MaxConn        int
+	MaxConn         int
 	MaxIdle         int
+
 	BackoffInterval time.Duration
 	retryCount      int
 }
@@ -33,6 +38,8 @@ type Response struct {
 	Detail    string          `json:"Detail"`
 	Data      json.RawMessage `json:"Data"`
 }
+
+
 
 func (r *Response) DecodeData(v interface{}) error {
 	reader := bytes.NewReader(r.Data)
@@ -75,7 +82,7 @@ func SpliceUrl(params Params) string {
 	return paramsStr
 }
 
-func (w *WeChat)request(url, method string, data RequestData) (response *Response, err error) {
+func (w *WeChat) request(url, method string, data RequestData) (response *Response, err error) {
 	response = new(Response)
 	client := NewHttpClient(w.Conf)
 
@@ -88,7 +95,7 @@ func (w *WeChat)request(url, method string, data RequestData) (response *Respons
 	case http.MethodGet:
 		err = client.Get(ctx, url, nil, response)
 	}
-	if  err != nil {
+	if err != nil {
 		return nil, err
 	}
 
