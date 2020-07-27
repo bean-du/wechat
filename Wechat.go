@@ -3,7 +3,6 @@ package wechat
 import (
 	"context"
 	"errors"
-	"fmt"
 	"net/http"
 )
 
@@ -63,4 +62,3 @@ func (w *WeChat) request(url, method string, data RequestData) (response *Respon
 	}
 	return
 }
-
