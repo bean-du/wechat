@@ -23,17 +23,17 @@ func (w *WeChat) Auth(OrgId string, data RequestData, method, apiRouter, action 
 	if err != nil {
 		return "", err
 	}
-	sign, err := Sign(w.SecretKey, method, url, params, string(jsonData))
-	if err != nil {
-		return "", err
-	}
-	params["Sign"] = sign
 	if method == "GET" && data != nil {
 		for k, v := range data {
 			val, _ := json.Marshal(v)
 			params[k] = string(val)
 		}
 	}
+	sign, err := Sign(w.SecretKey, method, url, params, string(jsonData))
+	if err != nil {
+		return "", err
+	}
+	params["Sign"] = sign
 
 	httpUrl := SpliceUrl(params)
 	httpUrl = fmt.Sprintf("https://%s?%s", url, httpUrl)
