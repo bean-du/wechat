@@ -1,4 +1,4 @@
-module wechat
+module github.com/bean-du/wechat
 
 go 1.14
 
