@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math/rand"
+	"net/http"
 	"strconv"
 	"time"
 )
@@ -19,20 +20,30 @@ func (w *WeChat) Auth(OrgId string, data interface{}, method, apiRouter, action 
 	params["OrgId"] = OrgId
 	params["Nonce"] = generateNonce()
 	url := w.ApiUrl + apiRouter
-	jsonData, err := json.Marshal(data)
-	if err != nil {
-		return "", err
-	}
-	if method == "GET" && data != nil {
-		requestData, ok := data.(RequestData)
-		if ok {
-			for k, v := range requestData {
-				val, _ := json.Marshal(v)
-				params[k] = string(val)
+
+	var (
+		body []byte
+		err error
+	)
+	if data != nil {
+		switch method {
+		case http.MethodGet:
+			requestData, ok := data.(RequestData)
+			if ok {
+				for k, v := range requestData {
+					val, _ := json.Marshal(v)
+					params[k] = string(val)
+				}
+			}
+		case http.MethodPost:
+			body, err = json.Marshal(data)
+			if err != nil {
+				return "", err
 			}
 		}
 	}
-	sign, err := Sign(w.SecretKey, method, url, params, string(jsonData))
+
+	sign, err := Sign(w.SecretKey, method, url, params, string(body))
 	if err != nil {
 		return "", err
 	}

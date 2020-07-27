@@ -70,11 +70,11 @@ func (w *WeChat) AddDepartments(orgId string, data interface{}) (*Response, erro
 }
 
 // 根据id更新组织架构，支持批量
-func (w *WeChat) UpdateDepartments(orgId string, data RequestData) (*Response, error) {
+func (w *WeChat) UpdateDepartments(orgId string, data interface{}) (*Response, error) {
 	return w.AuthAndRequest(orgId, http.MethodPost, "UpdateDepartments", ORG_USER_API, data)
 }
 
 //删除指定组织架构
-func (w *WeChat) DeleteDepartment(orgId string, data RequestData) (*Response, error) {
+func (w *WeChat) DeleteDepartment(orgId string, data interface{}) (*Response, error) {
 	return w.AuthAndRequest(orgId, http.MethodPost, "DeleteDepartment", ORG_USER_API, data)
 }
