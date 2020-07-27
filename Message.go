@@ -25,6 +25,7 @@ type MessageList struct {
 	PageInfo PageInfo           `json:"PageInfo"`
 	DataList []*MessageResponse `json:"DataList"`
 }
+
 type PageInfo struct {
 	Total int `json:"Total"`
 	Page  int `json:"Page"`
