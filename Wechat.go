@@ -32,7 +32,7 @@ func (w *WeChat) SetRetry(retry int) {
 }
 
 // 执行签名并发起请求
-func (w *WeChat) AuthAndRequest(orgId, method, action, api string, data RequestData, ) (response *Response, err error) {
+func (w *WeChat) AuthAndRequest(orgId, method, action, api string, data interface{}) (response *Response, err error) {
 	url, err := w.Auth(orgId, data, method, api, action)
 	if err != nil {
 		return nil, err
@@ -40,7 +40,7 @@ func (w *WeChat) AuthAndRequest(orgId, method, action, api string, data RequestD
 	return w.request(url, method, data)
 }
 
-func (w *WeChat) request(url, method string, data RequestData) (response *Response, err error) {
+func (w *WeChat) request(url, method string, data interface{}) (response *Response, err error) {
 	response = new(Response)
 	client := NewHttpClient(w.Conf)
 
