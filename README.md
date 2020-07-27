@@ -26,18 +26,11 @@ func main()  {
 ### GET 方式没参数示例
 
 ```go
-  // 接口为GET方式，没有请求参数，参数可以传nil
-    info, err := client.GetOrgInfo(&quot;188776&quot;,nil)
-    if err != nil {
-        return
-    }
-   
-    // 下面为GET方法带参数的接口请求示例：参数为 RequestData 类型，实际是map
-    data := wechat.RequestData{&quot;DepartmentType&quot;: 0, &quot;PageIndex&quot;: 1, &quot;PageSize&quot;: 10}
-	res, err := c.GetDepartmentList(orgId, data)
-	if err != nil {
-		log.Println(err)
-	}
+info, err := c.GetOrgInfo(orgId, nil)
+if err != nil {
+	return
+}
+fmt.Println(info)
 ```
 
 
@@ -47,18 +40,16 @@ func main()  {
 
 
 ```go
-  // 次接口为GET方式，没有请求参数，参数可以传nil
-    info, err := client.GetOrgInfo("188776",nil)
-    if err != nil {
-        return
-    }
-   
-    // 下面为GET方法带参数的接口请求示例：参数为 RequestData 类型，实际是map
-    data := wechat.RequestData{"DepartmentType": 0, "PageIndex": 1, "PageSize": 10}
-	res, err := c.GetDepartmentList(orgId, data)
-	if err != nil {
-		log.Println(err)
-	}
+data := wechat.RequestData{"DepartmentType": 0, "PageIndex": 1, "PageSize": 10}
+res, err := c.GetDepartmentList(orgId, data)
+if err != nil {
+	log.Println(err)
+}
+
+for _, v := range res.Departments {
+	fmt.Println(v)
+}
+fmt.Println(res)
     
 ```
 
