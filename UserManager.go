@@ -45,7 +45,7 @@ type OpenStudent struct {
 	UserNo      string               `json:"UserNo	"`
 	JoinDate    string               `json:"JoinDate"`
 	Sex         int                  `json:"Sex"` //性别 1:男 2:女
-	Departments []*StudentDepartment `json:"Departments"`
+	Departments *StudentDepartment `json:"Departments"`
 }
 type StudentDepartment struct {
 	Id int `json:"Id"` //架构id
