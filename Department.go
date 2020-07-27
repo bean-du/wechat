@@ -65,16 +65,16 @@ func (w *WeChat) departmentOpt(orgId, method, action, api string, data RequestDa
 }
 
 //添加组织架构，支持批量，由根节点递归创建。创建单个节点时只需传根节点即可
-func (w *WeChat) AddDepartments(orgId string, data interface{}) (*Response, error) {
+func (w *WeChat) AddDepartments(orgId string, data RequestData) (*Response, error) {
 	return w.AuthAndRequest(orgId, http.MethodPost, "AddDepartments", ORG_USER_API, data)
 }
 
 // 根据id更新组织架构，支持批量
-func (w *WeChat) UpdateDepartments(orgId string, data interface{}) (*Response, error) {
+func (w *WeChat) UpdateDepartments(orgId string, data RequestData) (*Response, error) {
 	return w.AuthAndRequest(orgId, http.MethodPost, "UpdateDepartments", ORG_USER_API, data)
 }
 
 //删除指定组织架构
-func (w *WeChat) DeleteDepartment(orgId string, data interface{}) (*Response, error) {
+func (w *WeChat) DeleteDepartment(orgId string, data RequestData) (*Response, error) {
 	return w.AuthAndRequest(orgId, http.MethodPost, "DeleteDepartment", ORG_USER_API, data)
 }

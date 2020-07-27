@@ -49,7 +49,7 @@ type MessageResponse struct {
 }
 
 //发送信息通知
-func (w *WeChat) SendMessage(orgId string, data interface{}) (*Response, error) {
+func (w *WeChat) SendMessage(orgId string, data RequestData) (*Response, error) {
 	return w.AuthAndRequest(orgId, http.MethodPost, "SendMessage", MSG_API, data)
 }
 

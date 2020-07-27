@@ -12,7 +12,7 @@ import (
 type Params map[string]string
 type RequestData map[string]interface{}
 
-func (w *WeChat) Auth(OrgId string, data interface{}, method, apiRouter, action string) (string, error) {
+func (w *WeChat) Auth(OrgId string, data RequestData, method, apiRouter, action string) (string, error) {
 	var params = make(map[string]string)
 	params["Action"] = action
 	params["Timestamp"] = generateTimestamp()
@@ -28,13 +28,13 @@ func (w *WeChat) Auth(OrgId string, data interface{}, method, apiRouter, action 
 	if data != nil {
 		switch method {
 		case http.MethodGet:
-			requestData, ok := data.(RequestData)
-			if ok {
-				for k, v := range requestData {
+			//requestData, ok := data.(RequestData)
+			//if ok {
+				for k, v := range data {
 					val, _ := json.Marshal(v)
 					params[k] = string(val)
 				}
-			}
+			//}
 		case http.MethodPost:
 			body, err = json.Marshal(data)
 			if err != nil {

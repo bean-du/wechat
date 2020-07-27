@@ -32,16 +32,16 @@ type UserGroups struct {
 }
 
 //获取用户的基本信息
-func (w *WeChat) GetUsersInfo(orgId string, data interface{}) (*UsersInfos, error) {
+func (w *WeChat) GetUsersInfo(orgId string, data RequestData) (*UsersInfos, error) {
 	return w.userList(orgId, http.MethodPost, "GetUsersInfo", ORG_USER_API, data)
 }
 
 // 根据架构id获取用户信息列表
-func (w *WeChat) GetUserListByDepartmentIds(orgId string, data interface{}) (*UsersInfos, error) {
+func (w *WeChat) GetUserListByDepartmentIds(orgId string, data RequestData) (*UsersInfos, error) {
 	return w.userList(orgId, http.MethodPost, "GetUserListByDepartmentIds", ORG_USER_API, data)
 }
 
-func (w *WeChat) GetUsersInfoDetail(orgId string, data interface{}) (*UsersInfoDetails, error) {
+func (w *WeChat) GetUsersInfoDetail(orgId string, data RequestData) (*UsersInfoDetails, error) {
 	response, err := w.AuthAndRequest(orgId, http.MethodPost, "GetUsersInfoDetail", ORG_USER_API, data)
 	if err != nil {
 		return nil, err
@@ -60,7 +60,7 @@ func (w *WeChat) GetUsersInfoUserNo(orgId string, data RequestData) {
 }
 
 // 获取教师的其他身份
-func (w *WeChat) UserGroups(orgId string, data interface{}) (*UserGroups, error) {
+func (w *WeChat) UserGroups(orgId string, data RequestData) (*UserGroups, error) {
 	response, err := w.AuthAndRequest(orgId, http.MethodPost, "UserGroups", ORG_USER_API, data)
 	if err != nil {
 		return nil, err
@@ -73,7 +73,7 @@ func (w *WeChat) UserGroups(orgId string, data interface{}) (*UserGroups, error)
 	return &groups, err
 }
 
-func (w *WeChat) userList(orgId, method, action, api string, data interface{}) (*UsersInfos, error) {
+func (w *WeChat) userList(orgId, method, action, api string, data RequestData) (*UsersInfos, error) {
 	response, err := w.AuthAndRequest(orgId, method, action, api, data)
 	if err != nil {
 		return nil, err
