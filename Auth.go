@@ -28,13 +28,10 @@ func (w *WeChat) Auth(OrgId string, data RequestData, method, apiRouter, action 
 	if data != nil {
 		switch method {
 		case http.MethodGet:
-			//requestData, ok := data.(RequestData)
-			//if ok {
-				for k, v := range data {
-					val, _ := json.Marshal(v)
-					params[k] = string(val)
-				}
-			//}
+			for k, v := range data {
+				val, _ := json.Marshal(v)
+				params[k] = string(val)
+			}
 		case http.MethodPost:
 			body, err = json.Marshal(data)
 			if err != nil {
