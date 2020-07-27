@@ -25,7 +25,7 @@ type Session struct {
 }
 
 func (w *WeChat) GetAccessToken(userCode string) (*Response, error) {
-	apiUrl := fmt.Sprintf("%s?Action=GetAccessTokenByCode&SecretId=%d&SecretKey=%s&UserCode=%s", w.ApiUrl, w.SecretId, w.SecretKey, userCode)
+	apiUrl := fmt.Sprintf("https://%s?Action=GetAccessTokenByCode&SecretId=%d&SecretKey=%s&UserCode=%s", w.ApiUrl, w.SecretId, w.SecretKey, userCode)
 	response, err := w.request(apiUrl, http.MethodGet, nil)
 	if err != nil {
 		return nil, err
@@ -39,7 +39,7 @@ func (w *WeChat) FlashToken(c context.Context, currentToken string, expire time.
 		for {
 			select {
 			case <-timer.C:
-				url := fmt.Sprintf("%sRefreshAccessToken&SecretId=%d&SecretKey=%s&CurrentAccessToken=%s", w.ApiUrl, w.SecretId, w.SecretKey, currentToken)
+				url := fmt.Sprintf("https://%sRefreshAccessToken&SecretId=%d&SecretKey=%s&CurrentAccessToken=%s", w.ApiUrl, w.SecretId, w.SecretKey, currentToken)
 				// flash token Api request
 				response, err := w.request(url, http.MethodGet, nil)
 				if err != nil {
