@@ -65,7 +65,7 @@ func (w *WeChat) departmentOpt(orgId, method, action, api string, data RequestDa
 }
 
 //添加组织架构，支持批量，由根节点递归创建。创建单个节点时只需传根节点即可
-func (w *WeChat) AddDepartments(orgId string, data RequestData) (*Response, error) {
+func (w *WeChat) AddDepartments(orgId string, data interface{}) (*Response, error) {
 	return w.AuthAndRequest(orgId, http.MethodPost, "AddDepartments", ORG_USER_API, data)
 }
 

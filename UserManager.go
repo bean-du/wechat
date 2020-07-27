@@ -60,47 +60,47 @@ type OpenParent struct {
 }
 
 //添加教师, data数据示例： data["Teachers"] = []*Teachers
-func (w *WeChat) AddTeachers(orgId string, data RequestData) (*UserAddUpdateResponse, error) {
+func (w *WeChat) AddTeachers(orgId string, data interface{}) (*UserAddUpdateResponse, error) {
 	return w.addAndUpdate(orgId, data, "AddTeachers")
 }
 
 //修改教师, data数据示例： data["Teachers"] = []*Teachers
-func (w *WeChat) UpdateTeachers(orgId string, data RequestData) (*UserAddUpdateResponse, error) {
+func (w *WeChat) UpdateTeachers(orgId string, data interface{}) (*UserAddUpdateResponse, error) {
 	return w.addAndUpdate(orgId, data, "UpdateTeachers")
 }
 
 //添加临时成员  data数据示例： data["Teachers"] = []*Teachers
-func (w *WeChat) AddTemporarys(orgId string, data RequestData) (*UserAddUpdateResponse, error) {
+func (w *WeChat) AddTemporarys(orgId string, data interface{}) (*UserAddUpdateResponse, error) {
 	return w.addAndUpdate(orgId, data, "AddTemporarys")
 }
 
 //修改临时成员 data数据示例： data["OrgUserIds"] = []*Teachers
-func (w *WeChat) UpdateTemporarys(orgId string, data RequestData) (*UserAddUpdateResponse, error) {
+func (w *WeChat) UpdateTemporarys(orgId string, data interface{}) (*UserAddUpdateResponse, error) {
 	return w.addAndUpdate(orgId, data, "UpdateTemporarys")
 }
 
 //添加学生信息，支持批量添加 data["OpenStudent"] = []*OpenStudent
-func (w *WeChat) AddStudents(orgId string, data RequestData) (*UserAddUpdateResponse, error) {
+func (w *WeChat) AddStudents(orgId string, data interface{}) (*UserAddUpdateResponse, error) {
 	return w.addAndUpdate(orgId, data, "AddStudents")
 }
 
 //修改学生信息，支持批量修改 data["OpenStudent"] = []*OpenStudent
-func (w *WeChat) UpdateStudents(orgId string, data RequestData) (*UserAddUpdateResponse, error) {
+func (w *WeChat) UpdateStudents(orgId string, data interface{}) (*UserAddUpdateResponse, error) {
 	return w.addAndUpdate(orgId, data, "UpdateStudents")
 }
 
 // 添加家长信息，支持批量添加 data["OpenParent"] = []*OpenParent
-func (w *WeChat) AddParents(orgId string, data RequestData) (*UserAddUpdateResponse, error) {
+func (w *WeChat) AddParents(orgId string, data interface{}) (*UserAddUpdateResponse, error) {
 	return w.addAndUpdate(orgId, data, "AddParents")
 }
 
 // 修改家长信息，支持批量修改 data["OpenParent"] = []*OpenParent
-func (w *WeChat) UpdateParents(orgId string, data RequestData) (*UserAddUpdateResponse, error) {
+func (w *WeChat) UpdateParents(orgId string, data interface{}) (*UserAddUpdateResponse, error) {
 	return w.addAndUpdate(orgId, data, "UpdateParents")
 }
 
 //删除教师 data["Teachers"] = []*Teachers
-func (w *WeChat) DeleteTeachers(orgId string, data RequestData) (*DeleteTeachersRes, error) {
+func (w *WeChat) DeleteTeachers(orgId string, data interface{}) (*DeleteTeachersRes, error) {
 	response, err := w.AuthAndRequest(orgId, http.MethodPost, "DeleteTeachers", ORG_USER_API, data)
 	if err != nil {
 		return nil, err
@@ -114,7 +114,7 @@ func (w *WeChat) DeleteTeachers(orgId string, data RequestData) (*DeleteTeachers
 }
 
 //批量删除学生 data["OpenStudent"] = []*OrgUserId{"1", "2"}
-func (w *WeChat) DeleteStudents(orgId string, data RequestData) (*UserDeleteRes, error) {
+func (w *WeChat) DeleteStudents(orgId string, data interface{}) (*UserDeleteRes, error) {
 	response, err := w.AuthAndRequest(orgId, http.MethodPost, "DeleteStudents", ORG_USER_API, data)
 	if err != nil {
 		return nil, err
@@ -128,7 +128,7 @@ func (w *WeChat) DeleteStudents(orgId string, data RequestData) (*UserDeleteRes,
 }
 
 //批量删除家长 data["OpenParent"] = []*OrgUserId{"1", "2"}
-func (w *WeChat) DeleteParents(orgId string, data RequestData) (*UserDeleteRes, error) {
+func (w *WeChat) DeleteParents(orgId string, data interface{}) (*UserDeleteRes, error) {
 	response, err := w.AuthAndRequest(orgId, http.MethodPost, "DeleteParents", ORG_USER_API, data)
 	if err != nil {
 		return nil, err
@@ -141,7 +141,7 @@ func (w *WeChat) DeleteParents(orgId string, data RequestData) (*UserDeleteRes, 
 	return &res, nil
 }
 
-func (w *WeChat) addAndUpdate(orgId string, data RequestData, action string) (*UserAddUpdateResponse, error) {
+func (w *WeChat) addAndUpdate(orgId string, data interface{}, action string) (*UserAddUpdateResponse, error) {
 	response, err := w.AuthAndRequest(orgId, http.MethodPost, action, ORG_USER_API, data)
 	if err != nil {
 		return nil, err
