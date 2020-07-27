@@ -11,7 +11,7 @@ type OrgInfo struct {
 	Province     string  `json:"Province"`
 	City         string  `json:"City"`
 	Area         string  `json:"Area"`
-	ProvinceCode string  `json:"ProvinceCode"`
+	ProvinceCode int     `json:"ProvinceCode"`
 	CityCode     string  `json:"CityCode"`
 	AreaCode     string  `json:"AreaCode"`
 	Level        int     `json:"Level"`
