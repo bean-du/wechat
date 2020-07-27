@@ -63,6 +63,3 @@ func (w *WeChat) request(url, method string, data RequestData) (response *Respon
 	return
 }
 
-func SyncDataFunc()  {
-	
-}
