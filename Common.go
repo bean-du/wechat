@@ -56,8 +56,9 @@ func Sign(secretKey, method, url string, params Params, body string) (signStr st
 
 	mac := hmac.New(sha1.New, []byte(secretKey))
 	mac.Write([]byte(rawStr))
-
-	signStr = Url.QueryEscape(hex.EncodeToString(mac.Sum(nil)))
+	hash := mac.Sum(nil)
+	b16encoded := hex.EncodeToString(hash)
+	signStr = Url.QueryEscape(b16encoded)
 	return
 }
 
