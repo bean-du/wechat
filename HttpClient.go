@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	MIMEJSON              = "application/json"
+	MIMEJSON              = "application/json;charset=utf-8"
 	MIMEHTML              = "text/html"
 	MIMEXML               = "application/xml"
 	MIMEXML2              = "text/xml"
